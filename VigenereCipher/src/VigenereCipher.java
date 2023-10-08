@@ -21,13 +21,7 @@ public class VigenereCipher {
         StringBuilder keySequence = new StringBuilder();
 
         StringBuilder cipherTextLowerCase = new StringBuilder();
-        for (int i = 0; i < cipherText.length(); i++) {
-            if((int) cipherText.charAt(i) <= 90){
-                cipherTextLowerCase.append(cipherText.toLowerCase().charAt(i));
-            }else {
-                cipherTextLowerCase.append(cipherText.charAt(i));
-            }
-        }
+        cipherTextLowerCase.append(cipherText.toLowerCase());
 
         for (int i = 0, numSymbolKey = 0; i < cipherTextLowerCase.length(); i++) {
             if(numSymbolKey == key.length()){
@@ -67,13 +61,7 @@ public class VigenereCipher {
         StringBuilder keySequence = new StringBuilder();
 
         StringBuilder cipherTextLowerCase = new StringBuilder();
-        for (int i = 0; i < cipherText.length(); i++) {
-            if((int) cipherText.charAt(i) <= 90){
-                cipherTextLowerCase.append(cipherText.toLowerCase().charAt(i));
-            }else {
-                cipherTextLowerCase.append(cipherText.charAt(i));
-            }
-        }
+        cipherTextLowerCase.append(cipherText.toLowerCase());
 
         for (int i = 0, numSymbolKey = 0; i < cipherTextLowerCase.length(); i++) {
             if(numSymbolKey == key.length()){
