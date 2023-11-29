@@ -108,10 +108,10 @@ public class DES {
                 44, 49, 39, 56, 34, 53,
                 46, 42, 50, 36, 29, 32
         };
-
+//        f8b7 f3ed a6dc db8b 9dd6 5be0 1e7b a551
         public static void main(String[] args) {
-                String oriText = "f8b7 f3ed a6dc db8b 9dd6 5be0 1e7b a551";
-                String key = convertStringToHex("myr");
+                String oriText = "abcdefge1223de25";
+                String key = convertStringToHex("mur");
                 byte[] keys = parseBytes(key);
                 byte[] test = parseBytes(oriText);
 
@@ -152,7 +152,7 @@ public class DES {
                 return permute(PC2, 56, src);
         }
 
-
+        // перестановка битов
         private static long permute(byte[] table, int srcWidth, long src) {
                 long dst = 0;
                 for (int i = 0; i < table.length; i++) {
@@ -161,12 +161,12 @@ public class DES {
                 }
                 return dst;
         }
-
+        // сдвиг
         private static byte S(int boxNumber, byte src) {
                 src = (byte) (src & 0x20 | ((src & 0x01) << 4) | ((src & 0x1E) >> 1));
                 return S[boxNumber - 1][src];
         }
-
+        // переводим байты в long
         private static long getLongFromBytes(byte[] ba, int offset) {
                 long l = 0;
                 for (int i = 0; i < 8; i++) {
@@ -180,7 +180,7 @@ public class DES {
                 }
                 return l;
         }
-
+        // переводим long в байты
         private static void getBytesFromLong(byte[] ba, int offset, long l) {
                 for (int i = 7; i > -1; i--) {
                         if ((offset + i) < ba.length) {
@@ -191,7 +191,7 @@ public class DES {
                         }
                 }
         }
-
+        // алгоритм фейстеля
         private static int feistel(int r, long subkey) {
                 long e = E(r);
                 long x = e ^ subkey;
@@ -204,7 +204,7 @@ public class DES {
                 }
                 return P(dst);
         }
-
+        // генерим подключи
         private static long[] createSubkeys(long key) {
                 long subkeys[] = new long[16];
                 key = PC1(key);
@@ -225,7 +225,7 @@ public class DES {
                 }
                 return subkeys;
         }
-
+        // шифруем блок
         public static long encryptBlock(long m, long key) {
                 long subkeys[] = createSubkeys(key);
                 long ip = IP(m);
@@ -241,7 +241,7 @@ public class DES {
                 long fp = FP(rl);
                 return fp;
         }
-
+        // char в полубайты (1-9, a-f, A-F)
         private static int charToNibble(char c) {
                 if (c >= '0' && c <= '9') {
                         return (c - '0');
@@ -253,7 +253,7 @@ public class DES {
                         return 0;
                 }
         }
-
+        // строки в массив байты
         private static byte[] parseBytes(String s) {
                 s = s.replace(" ", "");
                 byte[] ba = new byte[s.length() / 2];
@@ -265,7 +265,7 @@ public class DES {
                 }
                 return ba;
         }
-
+        //преобразует массив байтов в строку в шестнадцатеричном формате
         private static String hex(byte[] bytes) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < bytes.length; i++) {
@@ -273,7 +273,7 @@ public class DES {
                 }
                 return sb.toString();
         }
-
+        //преобразует строку в шестнадцатеричное представление
         public static String convertStringToHex(String str){
                 char[] chars = str.toCharArray();
                 StringBuffer hex = new StringBuffer();
@@ -283,7 +283,7 @@ public class DES {
 
                 return hex.toString();
         }
-
+        // шифрование 
         public static byte[] encrypt(byte[] message, byte[] key) {
                 byte[] ciphertext = new byte[message.length];
                 long k = getLongFromBytes(key, 0);
@@ -298,7 +298,7 @@ public class DES {
 
                 return ciphertext;
         }
-
+        // дешифруем блок
         public static long decryptBlock(long c, long key) {
                 long[] subkeys = createSubkeys(key);
                 long ip = IP(c);
@@ -314,6 +314,7 @@ public class DES {
                 long fp = FP(rl);
                 return fp;
         }
+        // дешифрование
         public static byte[] decrypt(byte[] ciphertext, byte[] key) {
                 byte[] message = new byte[ciphertext.length];
                 long k = getLongFromBytes(key, 0);
